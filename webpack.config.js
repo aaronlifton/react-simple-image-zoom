@@ -15,17 +15,27 @@ module.exports = [{
     extensions: [ '.tsx', '.ts', '.js' ]
   },
   output: {
-    filename: 'bundle.js',
+    filename: 'ReactSimpleImageZoom.js',
     path: path.resolve(__dirname, 'dist')
   }
 },{
-  entry: './demo/App.tsx',
+  devtool: 'source-map',
+  entry: './demo/src/App.tsx',
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
-        exclude: /node_modules/
+        exclude: [
+          /node_modules/,
+          "src",
+          "dist",
+          "demo/dist"
+        ]
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
       }
     ]
   },
@@ -34,6 +44,6 @@ module.exports = [{
   },
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'demo')
+    path: path.resolve(__dirname, 'demo/dist')
   }
 }];

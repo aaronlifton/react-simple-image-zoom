@@ -1,0 +1,11 @@
+.portal {
+  position: absolute;
+  left: 50%;
+  width: 540px;
+  top: 0;
+  z-index: 1;
+}
+.portal-img {
+  max-width: none;
+  background-repeat: no-repeat;
+}

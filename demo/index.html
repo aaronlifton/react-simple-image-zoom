@@ -4,9 +4,23 @@
   <meta name="viewport" content="width=768px, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>React Simple Image Zoom</title>
-  <script type="text/javascript" src="../dist/"></script>
+  <style>
+    body {
+      margin: 0;
+    }
+    .image-zoom-container.active {
+      cursor: none;
+    }
+    .slider {
+      height: 50px;
+    }
+    #portal {
+      top: 50px;
+    }
+  </style>
 </head>
 <body>
   <div id="appContainer"></div>
+  <script type="text/javascript" src="dist/bundle.js"></script>
 </body>
 </html>

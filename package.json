@@ -4,7 +4,8 @@
   "description": "Simple image zoom/magnification component for react, using react portals",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js"
   },
   "keywords": [
     "react",
@@ -28,8 +29,13 @@
     "@types/node": "^9.6.1",
     "@types/react": "^16.1.0",
     "@types/react-dom": "^16.0.4",
+    "css-loader": "^0.28.11",
+    "rc-slider": "^8.6.1",
+    "style-loader": "^0.20.3",
     "ts-loader": "^4.1.0",
     "typescript": "^2.8.1",
-    "webpack": "^4.4.1"
+    "webpack": "^4.4.1",
+    "webpack-cli": "^2.0.13",
+    "webpack-dev-server": "^3.1.1"
   }
 }
