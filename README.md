@@ -68,4 +68,5 @@ See `./demo` for a more detailed example.
 
 ### License
 Copyright © 2018 Aaron Lifton
+
 MIT
