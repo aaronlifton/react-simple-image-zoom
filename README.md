@@ -19,9 +19,9 @@ const App = () =>
   <div id="app">
     <div style={{width: "540px", marginLeft: "20px", overflow: "hidden"}}>
       <ImageZoom portalId="portal" largeImgSrc={largeCatImg}
-        imageWidth={540} imageHeight={540} zoomWidth={this.state.zoomWidth} activeClass="my-active"
+        imageWidth={540} imageHeight={540} zoomWidth={540} activeClass="my-active"
         portalStyle={Object.assign(ImageZoom.defaultPortalStyle, {top: '120px'})}
-        zoomScale={this.state.zoomScale / 100}
+        zoomScale={1}
         >
         <img src={largeCatImg} alt="Cat image" width="100%"/>
       </ImageZoom>
