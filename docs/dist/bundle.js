@@ -90,6 +90,14 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
@@ -102,7 +110,7 @@ var App = /** @class */ (function (_super) {
     __extends(App, _super);
     function App(props) {
         var _this = _super.call(this, props) || this;
-        _this.state = { zoomWidth: 540, zoomScale: 100 };
+        _this.state = { zoomWidth: 540, zoomScale: 100, isResponsive: false };
         return _this;
     }
     App.prototype.onZoomWidthSliderChange = function (val) {
@@ -110,6 +118,9 @@ var App = /** @class */ (function (_super) {
     };
     App.prototype.onZoomScaleSliderChange = function (val) {
         this.setState({ zoomScale: val });
+    };
+    App.prototype.toggleResponsive = function () {
+        this.setState({ isResponsive: !this.state.isResponsive });
     };
     App.prototype.render = function () {
         var _this = this;
@@ -124,20 +135,23 @@ var App = /** @class */ (function (_super) {
         return (React.createElement("div", { className: "app" },
             React.createElement("div", { className: "header" },
                 React.createElement("h1", null, "React simple image zoom"),
-                React.createElement("div", { className: "slider" },
-                    React.createElement("div", { id: "zoomWidth" },
+                React.createElement("div", { className: "toggle-control" },
+                    React.createElement("input", { type: "checkbox", onChange: this.toggleResponsive.bind(this) }),
+                    " Responsive"),
+                React.createElement("div", { className: "controls" },
+                    React.createElement("div", { id: "zoomWidth", className: "slider-control" },
                         React.createElement("h3", null,
                             "zoomWidth: ",
                             this.state.zoomWidth),
                         React.createElement(rc_slider_1.default, { value: this.state.zoomWidth, min: 300, max: 1900, onChange: function (v) { return _this.onZoomWidthSliderChange(v); } })),
-                    React.createElement("div", { id: "zoomScale" },
+                    React.createElement("div", { id: "zoomScale", className: "slider-control" },
                         React.createElement("h3", null,
                             "zoomScale: ",
                             (this.state.zoomScale / 100).toFixed(2)),
                         React.createElement(rc_slider_1.default, { marks: zoomMarks, value: this.state.zoomScale, min: minScale * 100, max: 100, onChange: function (v) { return _this.onZoomScaleSliderChange(v); } })))),
             React.createElement("div", { className: "image-view" },
                 React.createElement("div", { style: { width: "540px", marginLeft: "20px", overflow: "hidden" } },
-                    React.createElement(src_1.ImageZoom, { portalId: "portal", largeImgSrc: largeCatImg, imageWidth: 540, imageHeight: 540, zoomWidth: this.state.zoomWidth, activeClass: "active", portalStyle: { width: '540px' }, zoomScale: this.state.zoomScale / 100 },
+                    React.createElement(src_1.ImageZoom, { portalId: "portal", largeImgSrc: largeCatImg, imageWidth: 540, imageHeight: 540, zoomContainerWidth: this.state.zoomWidth, activeClass: "active", portalStyle: Object.assign(__assign({}, src_1.ImageZoom.defaultPortalStyle), { top: "140px" }), zoomScale: this.state.zoomScale / 100, responsive: this.state.isResponsive },
                         React.createElement("img", { src: largeCatImg, alt: "Cat image", width: "100%" }))),
                 React.createElement("div", { id: "portal" }))));
     };
@@ -29561,8 +29575,12 @@ var ImageZoom = /** @class */ (function (_super) {
             offsetX: 0,
             offsetY: 0,
             zoomScale: _this.props.zoomScale || 1,
+            imageWidth: _this.props.imageWidth,
+            imageHeight: _this.props.imageHeight,
+            zoomContainerWidth: _this.props.zoomContainerWidth,
         };
         _this.portalStyle = _this.props.portalStyle ? _this.props.portalStyle : ImageZoom.defaultPortalStyle;
+        _this.onResize = _this.onWindowResize.bind(_this);
         _this.toggle = _this.toggleActive.bind(_this);
         _this.deactivate = _this.setInactive.bind(_this);
         _this.zoom = _this.zoom.bind(_this);
@@ -29575,23 +29593,77 @@ var ImageZoom = /** @class */ (function (_super) {
         }
         return { left: 0, top: 0 };
     };
+    ImageZoom.prototype.calcScaleX = function (width, zoomScale) {
+        if (zoomScale === void 0) { zoomScale = this.state.zoomScale; }
+        return (this.zoomImage.naturalWidth * zoomScale) / width;
+    };
+    ImageZoom.prototype.calcScaleY = function (height, zoomScale) {
+        if (zoomScale === void 0) { zoomScale = this.state.zoomScale; }
+        return (this.zoomImage.naturalHeight * zoomScale) / (height || this.zoomImage.height);
+    };
+    ImageZoom.prototype.calcZoomImageWidth = function (zoomScale) {
+        if (zoomScale === void 0) { zoomScale = this.state.zoomScale; }
+        return this.zoomImage.naturalWidth * zoomScale;
+    };
+    ImageZoom.prototype.calcZoomImageHeight = function (zoomScale) {
+        if (zoomScale === void 0) { zoomScale = this.state.zoomScale; }
+        return this.zoomImage.naturalHeight * zoomScale;
+    };
+    ImageZoom.prototype.getPortalStyle = function () {
+        if (this.props.responsive) {
+            return Object.assign(__assign({}, this.portalStyle), { width: this.state.zoomContainerWidth + "px" });
+        }
+        else {
+            return this.portalStyle;
+        }
+    };
+    ImageZoom.prototype.onWindowResize = function () {
+        var newImageWidth = this.image.offsetWidth;
+        var newImageHeight = this.image.offsetHeight;
+        var scaleX = this.calcScaleX(newImageWidth);
+        var scaleY = this.calcScaleY(newImageHeight);
+        var offset = this.getOffset(this.image);
+        this.setState({
+            offset: offset, scaleX: scaleX, scaleY: scaleY,
+            zoomContainerWidth: newImageWidth,
+            glassWidth: newImageWidth / scaleX,
+            glassHeight: newImageHeight / scaleY,
+            imageWidth: newImageWidth,
+            imageHeight: newImageHeight,
+        });
+    };
+    ImageZoom.prototype.componentWillUnmount = function () {
+        if (this.props.responsive)
+            window.removeEventListener('resize', this.onResize);
+    };
     ImageZoom.prototype.componentDidMount = function () {
         var _this = this;
+        var newImageHeight;
+        if (this.props.responsive)
+            window.addEventListener('resize', this.onResize);
         var image = new Image();
         image.src = this.props.children.props.src;
         image.onload = function () {
             _this.zoomImage = image;
-            var scaleX = (image.naturalWidth * _this.state.zoomScale) / _this.props.imageWidth;
-            var scaleY = (image.naturalHeight * _this.state.zoomScale) / (_this.props.imageHeight || image.height);
+            var newImageWidth, newImageHeight;
+            if (_this.props.responsive)
+                newImageWidth = _this.image.offsetWidth;
+            newImageHeight = _this.image.offsetHeight;
+            var scaleX = _this.calcScaleX(newImageWidth || _this.state.imageWidth);
+            var scaleY = _this.calcScaleY(newImageHeight || _this.state.imageHeight);
             var offset = _this.getOffset(_this.image);
-            _this.setState({
+            var newState = {
                 offset: offset, scaleX: scaleX, scaleY: scaleY,
-                zoomImageWidth: image.naturalWidth * _this.state.zoomScale,
-                zoomImageHeight: image.naturalHeight * _this.state.zoomScale,
-                glassWidth: _this.props.zoomWidth / scaleX,
-                glassHeight: _this.props.imageHeight / scaleY,
-            });
-            console.log('loaded image');
+                zoomImageWidth: _this.calcZoomImageWidth(),
+                zoomImageHeight: _this.calcZoomImageHeight(),
+                glassWidth: _this.props.zoomContainerWidth / scaleX,
+                glassHeight: (newImageHeight || _this.state.imageHeight) / scaleY,
+            };
+            if (newImageWidth)
+                newState.imageWidth = newImageWidth;
+            if (newImageHeight)
+                newState.imageHeight = newImageHeight;
+            _this.setState(newState);
         };
         if (this.props.largeImgSrc) {
             this.imgSrc = this.props.largeImgSrc;
@@ -29603,16 +29675,16 @@ var ImageZoom = /** @class */ (function (_super) {
         this.setState({ portalEl: portalEl });
     };
     ImageZoom.prototype.componentWillReceiveProps = function (newProps) {
-        var newGlassWidth, newZoomImageWidth;
         if (!this.zoomImage)
             return null;
         var minScale = this.image.offsetWidth / this.zoomImage.naturalWidth;
         if (newProps.zoomScale < minScale)
             return null;
-        var scaleX = (this.zoomImage.naturalWidth * newProps.zoomScale) / this.props.imageWidth;
-        var scaleY = (this.zoomImage.naturalHeight * newProps.zoomScale) / (this.props.imageHeight || this.zoomImage.height);
-        newZoomImageWidth = this.zoomImage.naturalWidth * newProps.zoomScale;
-        newGlassWidth = newProps.zoomWidth / scaleX;
+        var scaleX = this.calcScaleX(this.state.imageWidth, newProps.zoomScale);
+        var scaleY = this.calcScaleY(this.state.imageHeight, newProps.zoomScale);
+        var newGlassWidth, newZoomImageWidth;
+        newZoomImageWidth = this.calcZoomImageWidth(newProps.zoomScale);
+        newGlassWidth = newProps.zoomContainerWidth / scaleX;
         if (newGlassWidth > this.image.offsetWidth) {
             newGlassWidth = this.image.offsetWidth;
         }
@@ -29621,12 +29693,21 @@ var ImageZoom = /** @class */ (function (_super) {
             newZoomImageWidth = newGlassWidth;
         }
         ;
+        if (newProps.responsive && !this.props.responsive) {
+            window.addEventListener('resize', this.onResize);
+        }
+        ;
+        if (newProps.responsive == false && this.props.responsive) {
+            window.removeEventListener('resize', this.onResize);
+        }
+        ;
         this.setState({
             glassWidth: newGlassWidth,
-            glassHeight: this.props.imageHeight / scaleY,
+            glassHeight: this.state.imageHeight / scaleY,
             scaleX: scaleX, scaleY: scaleY,
             zoomImageWidth: newZoomImageWidth,
-            zoomImageHeight: this.zoomImage.naturalHeight * newProps.zoomScale,
+            zoomContainerWidth: newProps.zoomContainerWidth,
+            zoomImageHeight: this.calcZoomImageHeight(newProps.zoomScale),
             zoomScale: newProps.zoomScale
         });
     };
@@ -29642,7 +29723,7 @@ var ImageZoom = /** @class */ (function (_super) {
         // calculate glass position
         glassX = x - (this.state.glassWidth / 2);
         glassY = y - (this.state.glassHeight / 2);
-        // prevent the glass from being positioned outside the image
+        // glass boundaries
         if (glassX > this.image.offsetWidth - this.state.glassWidth) {
             glassX = this.image.offsetWidth - this.state.glassWidth;
         }
@@ -29677,12 +29758,12 @@ var ImageZoom = /** @class */ (function (_super) {
         var left = evt.clientX - this.state.offset.left;
         left = left + window.pageXOffset; // check for page scroll
         var leftMin = this.state.glassWidth / 2;
-        var leftLimit = this.props.imageWidth - leftMin;
+        var leftLimit = this.state.imageWidth - leftMin;
         var zoomLeft = this.getPosition(left, leftMin, leftLimit);
         var top = evt.clientY - this.state.offset.top;
         top = top + window.pageYOffset; // check for page scroll
         var topMin = this.state.glassHeight / 2;
-        var topLimit = this.props.imageHeight - topMin;
+        var topLimit = this.state.imageHeight - topMin;
         var zoomTop = this.getPosition(top, topMin, topLimit);
         x = zoomLeft * this.state.scaleX;
         y = zoomTop * this.state.scaleY;
@@ -29723,7 +29804,7 @@ var ImageZoom = /** @class */ (function (_super) {
         return (React.createElement(React.Fragment, null,
             this.state.isActive && this.state.zoomImageWidth &&
                 ReactDOM.createPortal(React.createElement("div", { ref: function (el) { return _this.zoomContainer = el; }, style: this.portalStyle },
-                    React.createElement(ZoomContainer_1.default, { imgSrc: this.imgSrc, offsetX: this.state.offsetX, offsetY: this.state.offsetY, zoomX: this.state.zoomX, zoomY: this.state.zoomY, zoomImageWidth: this.state.zoomImageWidth, zoomWidth: this.props.zoomWidth })), this.state.portalEl),
+                    React.createElement(ZoomContainer_1.default, { imgSrc: this.imgSrc, offsetX: this.state.offsetX, offsetY: this.state.offsetY, zoomX: this.state.zoomX, zoomY: this.state.zoomY, zoomImageWidth: this.state.zoomImageWidth, zoomContainerWidth: this.state.zoomContainerWidth, zoomContainerHeight: this.props.zoomContainerHeight || this.state.imageHeight })), this.state.portalEl),
             React.createElement("div", { ref: function (el) { return _this.image = el; }, onClick: this.toggle, onMouseLeave: this.deactivate, onMouseMove: this.zoom, className: imageContainerClass },
                 this.state.isActive && this.state.offset &&
                     React.createElement(MagnifyingGlass_1.default, { x: this.state.glassX + this.state.offset.left, y: this.state.glassY + this.state.offset.top, width: this.state.glassWidth, height: this.state.glassHeight }),
@@ -29786,8 +29867,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var ZoomContainer = function (props) {
     return (React.createElement("div", { className: "zoom-container", style: {
-            width: props.zoomWidth + "px",
-            paddingBottom: "100%",
+            width: props.zoomContainerWidth + "px",
+            height: props.zoomContainerHeight + "px",
             backgroundImage: "url(\"" + props.imgSrc + "\")",
             backgroundTop: "" + props.offsetX,
             backgroundLeft: "" + props.offsetY,

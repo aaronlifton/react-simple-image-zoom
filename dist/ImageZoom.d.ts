@@ -6,10 +6,12 @@ export interface ImageZoomProps {
     largeImgSrc?: string;
     imageWidth: number;
     imageHeight?: number;
-    zoomWidth: number;
+    zoomContainerWidth: number;
+    zoomContainerHeight?: number;
     activeClass?: string;
     portalStyle?: React.CSSProperties;
     zoomScale?: number;
+    responsive?: boolean;
 }
 export interface ImageZoomState {
     zoomX: number;
@@ -30,6 +32,9 @@ export interface ImageZoomState {
     lastScrollXPos?: number;
     lastScrollYPos?: number;
     zoomScale: number;
+    imageWidth: number;
+    imageHeight?: number;
+    zoomContainerWidth: number;
 }
 export default class ImageZoom extends React.Component<ImageZoomProps, ImageZoomState> {
     zoomContainer: HTMLElement;
@@ -39,12 +44,20 @@ export default class ImageZoom extends React.Component<ImageZoomProps, ImageZoom
     portalStyle: React.CSSProperties;
     toggle: () => void;
     deactivate: () => void;
+    onResize: () => void;
     static defaultPortalStyle: React.CSSProperties;
     constructor(props: any);
     getOffset(el: HTMLElement): {
         left: number;
         top: number;
     };
+    calcScaleX(width: number, zoomScale?: number): number;
+    calcScaleY(height: number, zoomScale?: number): number;
+    calcZoomImageWidth(zoomScale?: number): number;
+    calcZoomImageHeight(zoomScale?: number): number;
+    getPortalStyle(): React.CSSProperties;
+    onWindowResize(): void;
+    componentWillUnmount(): void;
     componentDidMount(): void;
     componentWillReceiveProps(newProps: ImageZoomProps): any;
     getGlassPos(evt: MouseEvent): {

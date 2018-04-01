@@ -25,13 +25,8 @@ module.exports = [{
     libraryTarget: 'umd'
   },
   externals: {
-    react: {
-      commonjs: 'react',
-      commonjs2: 'react',
-      amd: 'react',
-      umd: 'react',
-      root: 'React'
-    }
+    'react': 'React',
+    'react-dom': 'ReactDOM'
   }
 }, {
   devtool: 'source-map',
