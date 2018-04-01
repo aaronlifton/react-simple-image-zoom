@@ -1,18 +1,26 @@
 {
   "compilerOptions": {
-    "declaration": false,
+    "declaration": true,
     "lib": ["es6", "dom"],
-    "module": "es6",
+    "module": "commonjs",
     "moduleResolution": "node",
+    "rootDir": "./src",
+    "outDir": "./",
     "sourceMap": true,
-    "target": "es5",
+    "target": "es6",
     "jsx": "react"
   },
+  "files": [
+    "./src/index.ts"
+  ],
+  "types": [
+    "node"
+  ],
   "exclude": [
-    "**/*.spec.ts",
     "node_modules",
-    "vendor",
-    "public"
+    "**/*.spec.ts",
+    "**/*.d.ts",
+    "dist"
   ],
   "compileOnSave": false
 }

@@ -1,42 +1,22 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-interface MagnifyingGlassProps {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
+import ZoomContainer from './ZoomContainer';
+import MagnifyingGlass, { MagnifyingGlassProps } from './MagnifyingGlass';
 
-const MagnifyingGlass = (props: MagnifyingGlassProps) => {
-  console.log({glassY: props.y})
-  return <div className="glass" style={{
-    pointerEvents: "none",
-    position: "absolute",
-    top: `${props.y}px`,
-    left: `${props.x}px`,
-    background: '#eee',
-    width: `${props.width}px`,
-    height: `${props.height}px`,
-    backgroundColor: "rgba(0,0,0,.2)",
-    // outline: "1px solid rgba(0,0,0,0.8)",
-    zIndex: 2
-  }} />
-};
-
-interface ImageZoomProps {
-  children?: any;
+export interface ImageZoomProps {
+  children: any;
   portalId: string;
   largeImgSrc?: string;
-  largeImgSize?: number;
   imageWidth: number;
   imageHeight?: number;
   zoomWidth: number;
   activeClass?: string;
   portalStyle?: React.CSSProperties;
+  zoomScale?: number;
 }
 
-interface ImageZoomState {
+export interface ImageZoomState {
   zoomX: number;
   zoomY: number;
   portalEl?: HTMLElement;
@@ -45,13 +25,16 @@ interface ImageZoomState {
   glassY: number;
   glassWidth: number;
   glassHeight: number;
-  zoomImageNaturalWidth?: number;
-  zoomImageNaturalHeight?: number;
+  zoomImageWidth?: number;
+  zoomImageHeight?: number;
   scaleX: number;
   scaleY: number;
   offset?: any;
   offsetX: number;
   offsetY: number;
+  lastScrollXPos?: number;
+  lastScrollYPos?: number;
+  zoomScale: number;
 }
 
 export default class ImageZoom extends React.Component<ImageZoomProps, ImageZoomState> {
@@ -81,12 +64,13 @@ export default class ImageZoom extends React.Component<ImageZoomProps, ImageZoom
       zoomY: 0,
       glassX: 0,
       glassY: 0,
-      glassWidth: 146,
-      glassHeight: 146,
+      glassWidth: 40, // TODO: make 0
+      glassHeight: 40, // TODO: make 0
       scaleX: 1,
       scaleY: 1,
       offsetX: 0,
       offsetY: 0,
+      zoomScale: this.props.zoomScale || 1,
     };
 
     this.portalStyle = this.props.portalStyle ? this.props.portalStyle : ImageZoom.defaultPortalStyle;
@@ -104,20 +88,18 @@ export default class ImageZoom extends React.Component<ImageZoomProps, ImageZoom
     return {left: 0, top: 0};
   }
 
-
   componentDidMount() {
     const image = new Image();
     image.src = this.props.children.props.src;
     image.onload = () =>  {
       this.zoomImage = image;
-      const scaleX = image.naturalWidth / this.props.imageWidth;
-      const scaleY = image.naturalHeight / (this.props.imageHeight || image.height);
+      const scaleX = (image.naturalWidth * this.state.zoomScale) / this.props.imageWidth;
+      const scaleY = (image.naturalHeight * this.state.zoomScale) / (this.props.imageHeight || image.height);
       const offset = this.getOffset(this.image);
       this.setState({
         offset, scaleX, scaleY,
-        zoomImageNaturalWidth: image.naturalWidth,
-        zoomImageNaturalHeight: image.naturalHeight,
-        // glassWidth: this.props.imageWidth / scaleX,
+        zoomImageWidth: image.naturalWidth * this.state.zoomScale,
+        zoomImageHeight: image.naturalHeight * this.state.zoomScale,
         glassWidth: this.props.zoomWidth / scaleX,
         glassHeight: this.props.imageHeight / scaleY,
       });
@@ -133,23 +115,44 @@ export default class ImageZoom extends React.Component<ImageZoomProps, ImageZoom
     this.setState({portalEl: portalEl});
   }
 
+  componentWillReceiveProps(newProps: ImageZoomProps) {
+    let newGlassWidth, newZoomImageWidth;
+    if (!this.zoomImage) return null;
+    const minScale = this.image.offsetWidth/this.zoomImage.naturalWidth;
+    if (newProps.zoomScale < minScale) return null;
+    const scaleX = (this.zoomImage.naturalWidth * newProps.zoomScale) / this.props.imageWidth;
+    const scaleY = (this.zoomImage.naturalHeight * newProps.zoomScale) / (this.props.imageHeight || this.zoomImage.height);
+    newZoomImageWidth = this.zoomImage.naturalWidth * newProps.zoomScale;
+    newGlassWidth = newProps.zoomWidth / scaleX;
+    if (newGlassWidth > this.image.offsetWidth) {
+      newGlassWidth = this.image.offsetWidth;
+    };
+    if (newZoomImageWidth < newGlassWidth) {
+      newZoomImageWidth = newGlassWidth;
+    };
+    this.setState({
+      glassWidth: newGlassWidth,
+      glassHeight: this.props.imageHeight / scaleY,
+      scaleX, scaleY,
+      zoomImageWidth: newZoomImageWidth,
+      zoomImageHeight: this.zoomImage.naturalHeight * newProps.zoomScale,
+      zoomScale: newProps.zoomScale
+    });
+  }
+
   getGlassPos(evt: MouseEvent) {
     var a, x = 0, y = 0;
-    /*get the x and y positions of the image:*/
     const offset = this.getOffset(this.image);
-    /*calculate the cursor's x and y coordinates, relative to the image:*/
-    console.log({offsetX: evt.offsetX, offsetY: evt.offsetY})
 
     x = evt.pageX - offset.left;
     y = evt.pageY - offset.top;
-    console.log({y, offsetTop: offset.top})
-    /*consider any page scrolling :*/
+
+    // check for page scroll
     x = x - window.pageXOffset;
     y = y - window.pageYOffset;
-    console.log({windowPageYOffset: window.pageYOffset})
 
     let glassX, glassY;
-    // calculate the position of the lens
+    // calculate glass position
     glassX = x - (this.state.glassWidth / 2);
     glassY = y - (this.state.glassHeight / 2);
 
@@ -180,12 +183,14 @@ export default class ImageZoom extends React.Component<ImageZoomProps, ImageZoom
 
   getZoomStateFromEvent(evt: MouseEvent): {x: number, y: number} {
     let x, y;
-    const left = evt.clientX - this.state.offset.left;
+    let left = evt.clientX - this.state.offset.left;
+    left = left + window.pageXOffset; // check for page scroll
     const leftMin = this.state.glassWidth / 2;
     const leftLimit = this.props.imageWidth - leftMin;
     const zoomLeft = this.getPosition(left, leftMin, leftLimit);
 
-    const top = evt.clientY - this.state.offset.top;
+    let top = evt.clientY - this.state.offset.top;
+    top = top + window.pageYOffset; // check for page scroll
     const topMin = this.state.glassHeight / 2;
     const topLimit = this.props.imageHeight - topMin;
     const zoomTop = this.getPosition(top, topMin, topLimit);
@@ -241,7 +246,7 @@ export default class ImageZoom extends React.Component<ImageZoomProps, ImageZoom
 
     return (
       <React.Fragment>
-        {this.state.isActive && this.state.zoomImageNaturalWidth &&
+        {this.state.isActive && this.state.zoomImageWidth &&
           ReactDOM.createPortal(
             <div ref={(el) => this.zoomContainer = el} style={this.portalStyle}>
               <ZoomContainer
@@ -250,7 +255,7 @@ export default class ImageZoom extends React.Component<ImageZoomProps, ImageZoom
                 offsetY={this.state.offsetY}
                 zoomX={this.state.zoomX}
                 zoomY={this.state.zoomY}
-                zoomImageNaturalWidth={this.state.zoomImageNaturalWidth}
+                zoomImageWidth={this.state.zoomImageWidth}
                 zoomWidth={this.props.zoomWidth}
                 />
             </div>,
@@ -277,22 +282,4 @@ export default class ImageZoom extends React.Component<ImageZoomProps, ImageZoom
       </React.Fragment>
     )
   }
-}
-
-const ZoomContainer = (props: Partial<ImageZoomState> & {zoomWidth: number, imgSrc: string}) => {
-  return (
-    <div
-      className="zoom-container"
-      style={{
-        width: `${props.zoomWidth}px`,
-        paddingBottom: "100%",
-        backgroundImage: `url("${props.imgSrc}")`,
-        backgroundTop: `${props.offsetX}`,
-        backgroundLeft: `${props.offsetY}`,
-        backgroundPosition: `-${props.zoomX}px -${props.zoomY}px`,
-        backgroundSize: `${props.zoomImageNaturalWidth}px`,
-        backgroundRepeat: 'no-repeat',
-        }}
-      />
-  );
 }

@@ -7,7 +7,10 @@ module.exports = [{
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
-        exclude: /node_modules/
+        exclude: [
+          /node_modules/,
+          "./src/experimental"
+        ]
       }
     ]
   },
@@ -25,12 +28,15 @@ module.exports = [{
     rules: [
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
+        use: {
+          loader: 'ts-loader',
+          options: {
+            configFile: "demo/demo-tsconfig.json"
+          }
+        },
         exclude: [
           /node_modules/,
-          "src",
-          "dist",
-          "demo/dist"
+          "./demo/dist"
         ]
       },
       {

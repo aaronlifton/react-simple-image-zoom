@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Simple image zoom/magnification component for react, using react portals",
   "main": "index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js"
