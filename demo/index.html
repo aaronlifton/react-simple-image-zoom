@@ -12,13 +12,29 @@
     /* .image-zoom-container.active {
       cursor: none;
     } */
-    .header {
-      height: 120px;
+    h1 {
+      margin-bottom: 10px;
     }
-    .slider {
-      width: 75%;
+    .header {
+      height: 140px;
+    }
+    .toggle-control {
+      margin-left: 20px;
+      margin-bottom: 10px;
+    }
+    .controls {
+      width: 100%;
       margin-left: 20px;
       display: flex;
+    }
+    .controls > div.slider-control {
+      width: 45%;
+    }
+    .image-view {
+      display: flex;
+    }
+    .image-view > div {
+      width: 50%;
     }
     .slider > div {
       width: 50%;
@@ -26,6 +42,9 @@
     .rc-slider-mark {
       top: 12px !important;
       font-family: monospace;
+    }
+    #portal {
+      margin-left: 40px;
     }
     #zoomScale {
       margin-left: 20px;

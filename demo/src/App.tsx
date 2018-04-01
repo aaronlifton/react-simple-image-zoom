@@ -10,12 +10,13 @@ const largeCatImg = 'https://www.nationalgeographic.com/content/dam/animals/thum
 interface AppState {
   zoomWidth: number;
   zoomScale: number;
+  isResponsive: boolean;
 }
 
 class App extends React.Component<{}, AppState> {
   constructor(props: any) {
     super(props);
-    this.state = { zoomWidth: 540, zoomScale: 100 };
+    this.state = { zoomWidth: 540, zoomScale: 100, isResponsive: false };
   }
 
   onZoomWidthSliderChange(val: number) {
@@ -24,6 +25,10 @@ class App extends React.Component<{}, AppState> {
 
   onZoomScaleSliderChange(val: number) {
     this.setState({zoomScale: val});
+  }
+
+  toggleResponsive() {
+    this.setState({isResponsive: !this.state.isResponsive})
   }
 
   render() {
@@ -39,28 +44,33 @@ class App extends React.Component<{}, AppState> {
       <div className="app">
         <div className="header">
           <h1>React simple image zoom</h1>
-          <div className="slider">
-            <div id="zoomWidth">
+          <div className="toggle-control">
+            <input type="checkbox" onChange={this.toggleResponsive.bind(this)} /> Responsive
+          </div>
+          <div className="controls">
+            <div id="zoomWidth" className="slider-control">
               <h3>zoomWidth: {this.state.zoomWidth}</h3>
               <Slider value={this.state.zoomWidth} min={300} max={1900} onChange={(v) => this.onZoomWidthSliderChange(v)} />
             </div>
-            <div id="zoomScale">
+            <div id="zoomScale" className="slider-control">
               <h3>zoomScale: {(this.state.zoomScale / 100).toFixed(2)}</h3>
               <Slider marks={zoomMarks} value={this.state.zoomScale} min={minScale * 100} max={100} onChange={(v) => this.onZoomScaleSliderChange(v)} />
             </div>
           </div>
         </div>
-        <div style={{width: "540px", marginLeft: "20px", overflow: "hidden"}}>
-          <ImageZoom portalId="portal" largeImgSrc={largeCatImg}
-            imageWidth={540} imageHeight={540} zoomWidth={this.state.zoomWidth} activeClass="active"
-            portalStyle={Object.assign(ImageZoom.defaultPortalStyle, {top: '120px'})}
-            zoomScale={this.state.zoomScale / 100}
-            >
-            <img src={largeCatImg} alt="Cat image" width="100%"/>
-          </ImageZoom>
-        </div>
+        <div className="image-view">
+          <div style={{width: "540px", marginLeft: "20px", overflow: "hidden"}}>
+            <ImageZoom portalId="portal" largeImgSrc={largeCatImg}
+              imageWidth={540} imageHeight={540} zoomContainerWidth={this.state.zoomWidth} activeClass="active"
+              portalStyle={Object.assign({...ImageZoom.defaultPortalStyle}, {top: "140px"})}
+              zoomScale={this.state.zoomScale / 100} responsive={this.state.isResponsive}
+              >
+              <img src={largeCatImg} alt="Cat image" width="100%"/>
+            </ImageZoom>
+          </div>
 
-        <div id="portal" />
+          <div id="portal" />
+        </div>
       </div>
     )
   }

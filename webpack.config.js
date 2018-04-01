@@ -3,6 +3,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = [{
   entry: './src/index.ts',
+  mode: 'production',
   module: {
     rules: [
       {
@@ -20,11 +21,22 @@ module.exports = [{
   },
   output: {
     filename: 'ReactSimpleImageZoom.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
+    libraryTarget: 'umd'
+  },
+  externals: {
+    react: {
+      commonjs: 'react',
+      commonjs2: 'react',
+      amd: 'react',
+      umd: 'react',
+      root: 'React'
+    }
   }
-},{
+}, {
   devtool: 'source-map',
   entry: './demo/src/App.tsx',
+  mode: 'development',
   module: {
     rules: [
       {
@@ -32,13 +44,10 @@ module.exports = [{
         use: {
           loader: 'ts-loader',
           options: {
-            configFile: "demo/demo-tsconfig.json"
+            configFile: "demo/tsconfig.json"
           }
         },
-        exclude: [
-          /node_modules/,
-          "./demo/dist"
-        ]
+        exclude: /node_modules/
       },
       {
         test: /\.css$/,
