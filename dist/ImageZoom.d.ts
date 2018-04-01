@@ -10,6 +10,7 @@ export interface ImageZoomProps {
     zoomContainerHeight?: number;
     activeClass?: string;
     portalStyle?: React.CSSProperties;
+    portalClassName?: string;
     zoomScale?: number;
     responsive?: boolean;
 }

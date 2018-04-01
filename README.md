@@ -52,6 +52,7 @@ See `./demo` for a more detailed example.
 | zoomContainerHeight |no| number     | height of the portal zoom |
 | activeClass   |no| string      | optional, default is 'active'. applies this class to the image container when zooming is active |
 | portalStyle   |no| React.CSSProperties | optional, override the style of the portal. To extend the default style, use `ImageZoom.defaultPortalStyle` |
+| portalClassName |no| string | optional, sets className on the portal element |
 | zoomScale     |no| number      | optional, default is 1. Determines the amount of zoom. |
 | responsive    |no| boolean     | optional, default is null. Component will listen for window resize and adjust accordingly|
 

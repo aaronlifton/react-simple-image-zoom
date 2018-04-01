@@ -16,7 +16,7 @@ interface AppState {
 class App extends React.Component<{}, AppState> {
   constructor(props: any) {
     super(props);
-    this.state = { zoomWidth: 540, zoomScale: 100, isResponsive: false };
+    this.state = { zoomWidth: 540, zoomScale: 100, isResponsive: true };
   }
 
   onZoomWidthSliderChange(val: number) {
@@ -45,7 +45,7 @@ class App extends React.Component<{}, AppState> {
         <div className="header">
           <h1>React simple image zoom</h1>
           <div className="toggle-control">
-            <input type="checkbox" onChange={this.toggleResponsive.bind(this)} /> Responsive
+            <input type="checkbox" checked={this.state.isResponsive} onChange={this.toggleResponsive.bind(this)} /> Responsive
           </div>
           <div className="controls">
             <div id="zoomWidth" className="slider-control">
@@ -62,7 +62,7 @@ class App extends React.Component<{}, AppState> {
           <div style={{width: "540px", marginLeft: "20px", overflow: "hidden"}}>
             <ImageZoom portalId="portal" largeImgSrc={largeCatImg}
               imageWidth={540} imageHeight={540} zoomContainerWidth={this.state.zoomWidth} activeClass="active"
-              portalStyle={Object.assign({...ImageZoom.defaultPortalStyle}, {top: "140px"})}
+              portalStyle={Object.assign({...ImageZoom.defaultPortalStyle}, {top: "140px", left: null})}
               zoomScale={this.state.zoomScale / 100} responsive={this.state.isResponsive}
               >
               <img src={largeCatImg} alt="Cat image" width="100%"/>

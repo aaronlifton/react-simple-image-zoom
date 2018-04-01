@@ -14,6 +14,7 @@ export interface ImageZoomProps {
   zoomContainerHeight?: number;
   activeClass?: string;
   portalStyle?: React.CSSProperties;
+  portalClassName?: string;
   zoomScale?: number;
   responsive?: boolean;
 }
@@ -64,7 +65,7 @@ export default class ImageZoom extends React.Component<ImageZoomProps, ImageZoom
   constructor(props) {
     super(props);
     this.state = {
-      isActive: true,
+      isActive: false,
       portalEl: null,
       zoomX: 0,
       zoomY: 0,
@@ -326,7 +327,10 @@ export default class ImageZoom extends React.Component<ImageZoomProps, ImageZoom
       <React.Fragment>
         {this.state.isActive && this.state.zoomImageWidth &&
           ReactDOM.createPortal(
-            <div ref={(el) => this.zoomContainer = el} style={this.portalStyle}>
+            <div ref={(el) => this.zoomContainer = el}
+              style={this.portalStyle}
+              className={this.props.portalClassName}
+              >
               <ZoomContainer
                 imgSrc={this.imgSrc}
                 offsetX={this.state.offsetX}

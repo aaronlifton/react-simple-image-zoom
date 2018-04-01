@@ -110,7 +110,7 @@ var App = /** @class */ (function (_super) {
     __extends(App, _super);
     function App(props) {
         var _this = _super.call(this, props) || this;
-        _this.state = { zoomWidth: 540, zoomScale: 100, isResponsive: false };
+        _this.state = { zoomWidth: 540, zoomScale: 100, isResponsive: true };
         return _this;
     }
     App.prototype.onZoomWidthSliderChange = function (val) {
@@ -136,7 +136,7 @@ var App = /** @class */ (function (_super) {
             React.createElement("div", { className: "header" },
                 React.createElement("h1", null, "React simple image zoom"),
                 React.createElement("div", { className: "toggle-control" },
-                    React.createElement("input", { type: "checkbox", onChange: this.toggleResponsive.bind(this) }),
+                    React.createElement("input", { type: "checkbox", checked: this.state.isResponsive, onChange: this.toggleResponsive.bind(this) }),
                     " Responsive"),
                 React.createElement("div", { className: "controls" },
                     React.createElement("div", { id: "zoomWidth", className: "slider-control" },
@@ -151,7 +151,7 @@ var App = /** @class */ (function (_super) {
                         React.createElement(rc_slider_1.default, { marks: zoomMarks, value: this.state.zoomScale, min: minScale * 100, max: 100, onChange: function (v) { return _this.onZoomScaleSliderChange(v); } })))),
             React.createElement("div", { className: "image-view" },
                 React.createElement("div", { style: { width: "540px", marginLeft: "20px", overflow: "hidden" } },
-                    React.createElement(src_1.ImageZoom, { portalId: "portal", largeImgSrc: largeCatImg, imageWidth: 540, imageHeight: 540, zoomContainerWidth: this.state.zoomWidth, activeClass: "active", portalStyle: Object.assign(__assign({}, src_1.ImageZoom.defaultPortalStyle), { top: "140px" }), zoomScale: this.state.zoomScale / 100, responsive: this.state.isResponsive },
+                    React.createElement(src_1.ImageZoom, { portalId: "portal", largeImgSrc: largeCatImg, imageWidth: 540, imageHeight: 540, zoomContainerWidth: this.state.zoomWidth, activeClass: "active", portalStyle: Object.assign(__assign({}, src_1.ImageZoom.defaultPortalStyle), { top: "140px", left: null }), zoomScale: this.state.zoomScale / 100, responsive: this.state.isResponsive },
                         React.createElement("img", { src: largeCatImg, alt: "Cat image", width: "100%" }))),
                 React.createElement("div", { id: "portal" }))));
     };
@@ -29562,7 +29562,7 @@ var ImageZoom = /** @class */ (function (_super) {
     function ImageZoom(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
-            isActive: true,
+            isActive: false,
             portalEl: null,
             zoomX: 0,
             zoomY: 0,
@@ -29803,7 +29803,7 @@ var ImageZoom = /** @class */ (function (_super) {
             : '');
         return (React.createElement(React.Fragment, null,
             this.state.isActive && this.state.zoomImageWidth &&
-                ReactDOM.createPortal(React.createElement("div", { ref: function (el) { return _this.zoomContainer = el; }, style: this.portalStyle },
+                ReactDOM.createPortal(React.createElement("div", { ref: function (el) { return _this.zoomContainer = el; }, style: this.portalStyle, className: this.props.portalClassName },
                     React.createElement(ZoomContainer_1.default, { imgSrc: this.imgSrc, offsetX: this.state.offsetX, offsetY: this.state.offsetY, zoomX: this.state.zoomX, zoomY: this.state.zoomY, zoomImageWidth: this.state.zoomImageWidth, zoomContainerWidth: this.state.zoomContainerWidth, zoomContainerHeight: this.props.zoomContainerHeight || this.state.imageHeight })), this.state.portalEl),
             React.createElement("div", { ref: function (el) { return _this.image = el; }, onClick: this.toggle, onMouseLeave: this.deactivate, onMouseMove: this.zoom, className: imageContainerClass },
                 this.state.isActive && this.state.offset &&
