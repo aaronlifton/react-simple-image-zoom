@@ -30,7 +30,7 @@ const App = () =>
     <div id="portal" />
   </div>
 
-ReactDOM.render(<App />, 'myAppContainer');
+ReactDOM.render(<App />, document.getElementById('myAppContainer'));
 ```
 
 See `./demo` for a more detailed example.
