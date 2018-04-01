@@ -52,7 +52,6 @@ See `./demo` for a more detailed example.
 
 
 ### Usage with react-slick
-```
 - For the magnifying glass to work, make sure you style `.slick-side` like this:
   ```css
   .slick-side {
