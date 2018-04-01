@@ -33,16 +33,18 @@ ReactDOM.render(<App />, 'myAppContainer');
 See `./demo` for a more detailed example.
 
 ### Props
-```
-children: any; - required, pass the source image in as a child element
-portalId: string; - ID of the target portal element
-largeImgSrc?: string; - optional high-res source to use for the zoom container
-imageWidth: number; - required
-imageHeight?: number; - optional, pass in an image height to use for calculations. otherwise this component will figure it out.
-zoomWidth: number; - required, width of the portal zoom
-activeClass?: string; - optional, default is 'active'. applies this class to the image container when zooming is active
-portalStyle?: React.CSSProperties; - optional, override the style of the portal. To extend the default style, use `ImageZoom.defaultPortalStyle`
-zoomScale?: number; - optional, default is 1. Determines the amount of zoom.
+
+| prop | required | type | description  |
+| ------------- |----------|--------|-----|
+| children      |yes| any        | pass the source image in as a child element |
+| portalId      |yes| string     | ID of the target portal element |
+| largeImgSrc   |no| string      | optional high-res source to use for the zoom container |
+| imageWidth    |yes| number     | width of the original image on the screen |
+| imageHeight   |no| number      | optional, pass in an image height to use for calculations. otherwise this component will figure it out.|
+| zoomWidth     |yes| number     | width of the portal zoom |
+| activeClass   |no| string      | optional, default is 'active'. applies this class to the image container when zooming is active |
+| portalStyle   |no| React.CSSProperties | optional, override the style of the portal. To extend the default style, use `ImageZoom.defaultPortalStyle` |
+| zoomScale     |no| number      | optional, default is 1. Determines the amount of zoom. |
 ```
 
 ### Usage with react-slick
