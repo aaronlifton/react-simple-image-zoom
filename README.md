@@ -7,6 +7,7 @@ A simple image zoom component
 ### Install
 npm:
 `npm install --save react-simple-image-zoom`
+
 yarn:
 `yarn add react-simple-image-zoom`
 
