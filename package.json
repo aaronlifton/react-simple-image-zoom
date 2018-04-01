@@ -2,8 +2,10 @@
   "name": "react-simple-image-zoom",
   "version": "0.1.0",
   "description": "Simple image zoom/magnification component for react, using react portals",
-  "main": "index.js",
+  "main": "dist/ReactSimpleImageZoom.js",
   "types": "dist/index.d.ts",
+  "homepage": "https://github.com/aaronlifton2/react-simple-image-zoom",
+  "readme": "README.md",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js"
@@ -21,7 +23,7 @@
     "portal"
   ],
   "author": "Aaron Lifton",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "react": "^16.3.0",
     "react-dom": "^16.3.0"
