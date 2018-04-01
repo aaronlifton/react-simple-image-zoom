@@ -1,6 +1,9 @@
 ## React simple image zoom
 A simple image zoom component
 
+![Example](https://github.com/aaronlifton2/react-simple-image-zoom/blob/master/docs/assets/react-simple-image-zoom-example.png?raw=true)
+
+
 ### Install
 npm:
 `npm install --save react-simple-image-zoom`
