@@ -1,6 +1,7 @@
 ## React simple image zoom
 A simple image zoom component
 
+
 ![Example](https://github.com/aaronlifton2/react-simple-image-zoom/blob/master/docs/assets/react-simple-image-zoom-example.png?raw=true)
 
 
@@ -48,9 +49,10 @@ See `./demo` for a more detailed example.
 | activeClass   |no| string      | optional, default is 'active'. applies this class to the image container when zooming is active |
 | portalStyle   |no| React.CSSProperties | optional, override the style of the portal. To extend the default style, use `ImageZoom.defaultPortalStyle` |
 | zoomScale     |no| number      | optional, default is 1. Determines the amount of zoom. |
-```
+
 
 ### Usage with react-slick
+```
 - For the magnifying glass to work, make sure you style `.slick-side` like this:
   ```css
   .slick-side {
