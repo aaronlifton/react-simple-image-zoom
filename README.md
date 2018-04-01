@@ -61,3 +61,6 @@ See `./demo` for a more detailed example.
     position: relative;
   }
   ```
+  
+### Todo
+- get component to work on mobile devices
