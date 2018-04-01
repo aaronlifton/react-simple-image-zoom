@@ -64,3 +64,8 @@ See `./demo` for a more detailed example.
   
 ### Todo
 - get component to work on mobile devices
+
+
+### License
+Copyright © 2018 Aaron Lifton
+MIT
