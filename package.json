@@ -1,6 +1,6 @@
 {
   "name": "react-simple-image-zoom",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Simple image zoom/magnification component for react, using react portals",
   "main": "dist/ReactSimpleImageZoom.js",
   "types": "dist/index.d.ts",

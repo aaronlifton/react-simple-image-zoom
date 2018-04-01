@@ -58,7 +58,7 @@ export default class ImageZoom extends React.Component<ImageZoomProps, ImageZoom
   constructor(props) {
     super(props);
     this.state = {
-      isActive: true,
+      isActive: false,
       portalEl: null,
       zoomX: 0,
       zoomY: 0,
