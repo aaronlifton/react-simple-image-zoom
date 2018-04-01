@@ -1,6 +1,9 @@
 ## React simple image zoom
 A simple image zoom component
 
+### Demo
+- [https://aaronlifton2.github.io/react-simple-image-zoom/](https://aaronlifton2.github.io/react-simple-image-zoom/)
+
 
 ![Example](https://github.com/aaronlifton2/react-simple-image-zoom/blob/master/docs/assets/react-simple-image-zoom-example.png?raw=true)
 
