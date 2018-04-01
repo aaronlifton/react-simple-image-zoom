@@ -151,7 +151,7 @@ var App = /** @class */ (function (_super) {
                         React.createElement(rc_slider_1.default, { marks: zoomMarks, value: this.state.zoomScale, min: minScale * 100, max: 100, onChange: function (v) { return _this.onZoomScaleSliderChange(v); } })))),
             React.createElement("div", { className: "image-view" },
                 React.createElement("div", { style: { width: "540px", marginLeft: "20px", overflow: "hidden" } },
-                    React.createElement(src_1.ImageZoom, { portalId: "portal", largeImgSrc: largeCatImg, imageWidth: 540, imageHeight: 540, zoomContainerWidth: this.state.zoomWidth, activeClass: "active", portalStyle: Object.assign(__assign({}, src_1.ImageZoom.defaultPortalStyle), { top: "140px", left: null }), zoomScale: this.state.zoomScale / 100, responsive: this.state.isResponsive },
+                    React.createElement(src_1.ImageZoom, { portalId: "portal", largeImgSrc: largeCatImg, imageWidth: 540, imageHeight: 540, zoomContainerWidth: this.state.zoomWidth, activeClass: "active", portalStyle: Object.assign(__assign({}, src_1.ImageZoom.defaultPortalStyle), { top: "140px" }), zoomScale: this.state.zoomScale / 100, responsive: this.state.isResponsive },
                         React.createElement("img", { src: largeCatImg, alt: "Cat image", width: "100%" }))),
                 React.createElement("div", { id: "portal" }))));
     };
@@ -29812,9 +29812,7 @@ var ImageZoom = /** @class */ (function (_super) {
     };
     ImageZoom.defaultPortalStyle = {
         position: 'absolute',
-        left: '50%',
         width: '540px',
-        top: 0,
         zIndex: 1,
     };
     return ImageZoom;

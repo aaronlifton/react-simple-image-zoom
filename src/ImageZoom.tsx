@@ -56,9 +56,7 @@ export default class ImageZoom extends React.Component<ImageZoomProps, ImageZoom
 
   public static defaultPortalStyle: React.CSSProperties = {
     position: 'absolute',
-    left: '50%',
     width: '540px',
-    top: 0,
     zIndex: 1,
   };
 

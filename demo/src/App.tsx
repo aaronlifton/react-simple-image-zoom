@@ -62,7 +62,7 @@ class App extends React.Component<{}, AppState> {
           <div style={{width: "540px", marginLeft: "20px", overflow: "hidden"}}>
             <ImageZoom portalId="portal" largeImgSrc={largeCatImg}
               imageWidth={540} imageHeight={540} zoomContainerWidth={this.state.zoomWidth} activeClass="active"
-              portalStyle={Object.assign({...ImageZoom.defaultPortalStyle}, {top: "140px", left: null})}
+              portalStyle={Object.assign({...ImageZoom.defaultPortalStyle}, {top: "140px"})}
               zoomScale={this.state.zoomScale / 100} responsive={this.state.isResponsive}
               >
               <img src={largeCatImg} alt="Cat image" width="100%"/>
