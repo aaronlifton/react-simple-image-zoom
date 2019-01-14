@@ -1,7 +1,7 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-module.exports = [{
+module.exports = [{ 
   entry: './src/index.ts',
   mode: 'production',
   module: {
@@ -25,8 +25,20 @@ module.exports = [{
     libraryTarget: 'umd'
   },
   externals: {
-    'react': 'React',
-    'react-dom': 'ReactDOM'
+    'react': {
+      umd: 'react',
+      commonjs: 'react',
+      commonjs2: 'react',
+      amd: 'react',
+      root: 'React'
+    },
+    'react-dom': {
+      umd: 'react-dom',
+      commonjs: 'react-dom',
+      commonjs2: 'react-dom',
+      amd: 'react-dom',
+      root: 'ReactDOM'
+    }
   }
 }, {
   devtool: 'source-map',

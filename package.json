@@ -8,7 +8,8 @@
   "readme": "README.md",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js"
+    "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+    "build": "webpack"
   },
   "keywords": [
     "react",
