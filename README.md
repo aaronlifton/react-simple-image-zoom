@@ -23,11 +23,20 @@ const largeCatImg = 'https://www.nationalgeographic.com/content/dam/animals/thum
 const App = () =>
   <div id="app">
     <div style={{width: "540px", marginLeft: "20px", overflow: "hidden"}}>
-      <ImageZoom portalId="portal" largeImgSrc={largeCatImg}
-        imageWidth={540} imageHeight={540} zoomContainerWidth={540} activeClass="my-active"
-        portalStyle={Object.assign({...ImageZoom.defaultPortalStyle}, {top: "140px"}))}
-        zoomScale={1} responsive={true}
-        >
+      <ImageZoom
+        portalId="portal"
+        largeImgSrc={largeCatImg}
+        imageWidth={540}
+        imageHeight={540}
+        zoomContainerWidth={540}
+        activeClass="my-active"
+        portalStyle={Object.assign(
+          {...ImageZoom.defaultPortalStyle},
+          {top: "140px"}
+        )}
+        zoomScale={1}
+        responsive={true}
+      >
         <img src={largeCatImg} alt="Cat image" width="100%"/>
       </ImageZoom>
     </div>
