@@ -39,6 +39,11 @@ module.exports = [{
       amd: 'react-dom',
       root: 'ReactDOM'
     }
+  },
+  devServer: {
+    open: true,
+    openPage: 'docs',
+    publicPath: '/docs/',
   }
 }, {
   devtool: 'source-map',
