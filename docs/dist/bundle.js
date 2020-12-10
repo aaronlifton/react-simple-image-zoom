@@ -150,7 +150,7 @@ var App = /** @class */ (function (_super) {
                             "zoomScale: ",
                             (this.state.zoomScale / 100).toFixed(2)),
                         React.createElement(rc_slider_1.default, { marks: zoomMarks, value: this.state.zoomScale, min: minScale * 100, max: 100, onChange: function (v) { return _this.onZoomScaleSliderChange(v); } })))),
-            React.createElement("div", { className: "image-view", style: { marginTop: 40 } },
+            React.createElement("div", { className: "image-view", style: { marginTop: 60 } },
                 React.createElement("div", { style: { width: "540px", marginLeft: "20px", overflow: "hidden" } },
                     React.createElement(src_1.ImageZoom, { portalId: "portal", largeImgSrc: largeCatImg, imageWidth: 540, imageHeight: 540, zoomContainerWidth: this.state.zoomWidth, activeClass: "active", portalStyle: Object.assign(__assign({}, src_1.ImageZoom.defaultPortalStyle), { top: "180px" }), zoomScale: this.state.zoomScale / 100, responsive: this.state.isResponsive },
                         React.createElement("img", { src: largeCatImg, alt: "Cat image", width: "100%" }))),
