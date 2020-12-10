@@ -43,7 +43,8 @@ class App extends React.Component<{}, AppState> {
     return (
       <div className="app">
         <div className="header">
-          <h1>React simple image zoom</h1>
+          <h1 style={{marginLeft: 20, marginTop: 20}}>React simple image zoom</h1>
+          <h3 style={{marginLeft: 20, paddingBottom: 10, color: 'green'}}>Click image to start</h3>
           <div className="toggle-control">
             <input type="checkbox" checked={this.state.isResponsive} onChange={this.toggleResponsive.bind(this)} /> Responsive
           </div>
@@ -58,11 +59,11 @@ class App extends React.Component<{}, AppState> {
             </div>
           </div>
         </div>
-        <div className="image-view">
+        <div className="image-view" style={{marginTop: 40}}>
           <div style={{width: "540px", marginLeft: "20px", overflow: "hidden"}}>
             <ImageZoom portalId="portal" largeImgSrc={largeCatImg}
               imageWidth={540} imageHeight={540} zoomContainerWidth={this.state.zoomWidth} activeClass="active"
-              portalStyle={Object.assign({...ImageZoom.defaultPortalStyle}, {top: "140px"})}
+              portalStyle={Object.assign({...ImageZoom.defaultPortalStyle}, {top: "180px"})}
               zoomScale={this.state.zoomScale / 100} responsive={this.state.isResponsive}
               >
               <img src={largeCatImg} alt="Cat image" width="100%"/>

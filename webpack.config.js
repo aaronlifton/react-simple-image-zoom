@@ -42,7 +42,7 @@ module.exports = [{
   }
 }, {
   devtool: 'source-map',
-  entry: './demo/src/App.tsx',
+  entry: './example/src/App.tsx',
   mode: 'development',
   module: {
     rules: [
@@ -51,7 +51,7 @@ module.exports = [{
         use: {
           loader: 'ts-loader',
           options: {
-            configFile: "demo/tsconfig.json"
+            configFile: "example/tsconfig.json"
           }
         },
         exclude: /node_modules/
@@ -65,7 +65,7 @@ module.exports = [{
   plugins: [
     new CopyWebpackPlugin([
       {
-        from: path.resolve(__dirname, 'demo/index.html'),
+        from: path.resolve(__dirname, 'example/index.html'),
         to: path.resolve(__dirname, 'docs')
       }
     ])

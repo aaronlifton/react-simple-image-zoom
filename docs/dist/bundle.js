@@ -66,15 +66,15 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./demo/src/App.tsx");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./example/src/App.tsx");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./demo/src/App.tsx":
-/*!**************************!*\
-  !*** ./demo/src/App.tsx ***!
-  \**************************/
+/***/ "./example/src/App.tsx":
+/*!*****************************!*\
+  !*** ./example/src/App.tsx ***!
+  \*****************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -134,7 +134,8 @@ var App = /** @class */ (function (_super) {
         zoomMarks[minScale * 100] = minScale.toFixed(2);
         return (React.createElement("div", { className: "app" },
             React.createElement("div", { className: "header" },
-                React.createElement("h1", null, "React simple image zoom"),
+                React.createElement("h1", { style: { marginLeft: 20, marginTop: 20 } }, "React simple image zoom"),
+                React.createElement("h3", { style: { marginLeft: 20, paddingBottom: 10, color: 'green' } }, "Click image to start"),
                 React.createElement("div", { className: "toggle-control" },
                     React.createElement("input", { type: "checkbox", checked: this.state.isResponsive, onChange: this.toggleResponsive.bind(this) }),
                     " Responsive"),
@@ -149,9 +150,9 @@ var App = /** @class */ (function (_super) {
                             "zoomScale: ",
                             (this.state.zoomScale / 100).toFixed(2)),
                         React.createElement(rc_slider_1.default, { marks: zoomMarks, value: this.state.zoomScale, min: minScale * 100, max: 100, onChange: function (v) { return _this.onZoomScaleSliderChange(v); } })))),
-            React.createElement("div", { className: "image-view" },
+            React.createElement("div", { className: "image-view", style: { marginTop: 40 } },
                 React.createElement("div", { style: { width: "540px", marginLeft: "20px", overflow: "hidden" } },
-                    React.createElement(src_1.ImageZoom, { portalId: "portal", largeImgSrc: largeCatImg, imageWidth: 540, imageHeight: 540, zoomContainerWidth: this.state.zoomWidth, activeClass: "active", portalStyle: Object.assign(__assign({}, src_1.ImageZoom.defaultPortalStyle), { top: "140px" }), zoomScale: this.state.zoomScale / 100, responsive: this.state.isResponsive },
+                    React.createElement(src_1.ImageZoom, { portalId: "portal", largeImgSrc: largeCatImg, imageWidth: 540, imageHeight: 540, zoomContainerWidth: this.state.zoomWidth, activeClass: "active", portalStyle: Object.assign(__assign({}, src_1.ImageZoom.defaultPortalStyle), { top: "180px" }), zoomScale: this.state.zoomScale / 100, responsive: this.state.isResponsive },
                         React.createElement("img", { src: largeCatImg, alt: "Cat image", width: "100%" }))),
                 React.createElement("div", { id: "portal" }))));
     };
