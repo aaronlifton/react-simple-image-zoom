@@ -75,6 +75,9 @@ See `./demo` for a more detailed example.
   }
   ```
   
+### Development
+- `yarn run dev`
+- check `http://localhost:8080/docs`
 ### Todo
 - get component to work on mobile devices
 
